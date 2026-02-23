@@ -3,27 +3,6 @@ import java.util.Scanner;
 public class ExpertSystemProgram {
     static Scanner scnr = new Scanner(System.in);
 
-    // Asks user what their highest earned degree is. 0 is returned for no degree, 1 is returned for a Bachelor, and 2
-    // is returned for a Masters.
-    static int degreeQuestion() {
-        String answer;
-        System.out.print("What is the highest degree you have earned? (Bachelor in CS/Masters in CS/None): ");
-
-        while (true) { // Loop until acceptable answer is given
-            answer = scnr.nextLine().trim();
-
-            if (answer.equalsIgnoreCase("None")) {
-                return 0;
-            } else if (answer.equalsIgnoreCase("Bachelor in CS")) {
-                return 1;
-            } else if (answer.equalsIgnoreCase("Masters in CS")) {
-                return 2;
-            } else { // Incorrect answer given
-                System.out.print("Please correctly format your answer (Bachelor in CS/Masters in CS/None): "); // Re-prompt user
-            }
-        }
-    }
-
     // Asks user a yes or no question. 1 is returned if they answer yes, 0 is returned if they answered no
     // If incorrect input is given, the user is re-prompted to correct their answer
     static int yesOrNoQuestion(String question) {
@@ -31,12 +10,13 @@ public class ExpertSystemProgram {
         System.out.print(question + "(yes/no): "); // Ask user question
 
         while (true) { // Loop until acceptable answer is given
-            answer = scnr.nextLine().trim();
+            answer = scnr.nextLine().trim(); // Scan in answer, trimming any leading/excess spaces
 
+            // Parse answer
             if (answer.equalsIgnoreCase("yes") || (answer.equalsIgnoreCase("y"))){
-                return 1;
+                return 1; // User answers 'yes,' 1 is returned
             } else if (answer.equalsIgnoreCase("no") || answer.equalsIgnoreCase("n")){
-                return 0;
+                return 0; // User answers 'no,' 0 is returned
             } else { // Incorrect answer given
                 System.out.print("Please enter yes or no: "); // Re-prompt user
             }
@@ -51,25 +31,26 @@ public class ExpertSystemProgram {
         System.out.print(question + ": "); // Ask user question
 
         while (true) { // Loop until acceptable answer is given
-            answer = scnr.nextLine().trim();
+            answer = scnr.nextLine().trim(); // Scan in answer, trimming any leading/excess spaces
 
             try {
-                years = Integer.parseInt(answer);
+                years = Integer.parseInt(answer); // Convert answer to an int to be returned
 
                 if (years >= 0) {
                     return years;
-                } else {
-                    System.out.print("Please enter a non-negative number: ");
+                } else { // User entered a negative number
+                    System.out.print("Please enter a non-negative number: "); // Re-prompt user
                 }
-            } catch (NumberFormatException e) {
-                System.out.print("Please enter a number: ");
+            } catch (NumberFormatException e) { // User entered characters, symbols, etc.
+                System.out.print("Please enter a number: "); // Re-prompt user
             }
         }
     }
 
-    // Asks a series of questions to determine what jobs a user is qualified for
+    // Asks a series of questions to determine what jobs a user is qualified for. Results at the end show users which jobs
+    // they do and do not qualify for. If they are unqualified for a job, the reason(s) why are given
     public static void main(String[] args) throws InterruptedException {
-        int degree, pmiCert; // Qualification variables
+        int degreeBS, degreeMS, pmiCert; // Qualification variables
         int pythonCW, sweCW, agileCW; // Coursework variables
         int git, pythonYears, agileYears, dataDevYears, dataArchYears, managingYears, expertSystemYears; // Skills & experience variables
 
@@ -81,9 +62,11 @@ public class ExpertSystemProgram {
 
         // Ask user about their qualifications and record answers
         System.out.println("=+=+=+=+=+= Qualifications =+=+=+=+=+=");
-        degree = degreeQuestion();
+        degreeBS = yesOrNoQuestion("Do you have a Bachelor in CS? ");
+        degreeMS = yesOrNoQuestion("Do you have a Master in CS? ");
         pmiCert = yesOrNoQuestion("Do you have a PMI Lean Project Management Certification? ");
-        System.out.println();
+        System.out.println(); // Spacing
+        Thread.sleep(1000);
 
         // Ask user about their coursework and record answers
         System.out.println("=+=+=+=+=+= Coursework =+=+=+=+=+=");
@@ -97,7 +80,7 @@ public class ExpertSystemProgram {
         System.out.println("=+=+=+=+=+= Skills & Experience =+=+=+=+=+=");
         git = yesOrNoQuestion("Have you used GitHub? ");
 
-        // Ask time-based skills/experience questions
+        // Ask time-based questions
         System.out.println("For the following questions, enter how many years of experience you have working in each area.");
         pythonYears = yearsQuestion("Python Development");
         dataDevYears = yearsQuestion("Data Development");
@@ -115,13 +98,15 @@ public class ExpertSystemProgram {
         System.out.println();
         Thread.sleep(1000);
 
+        // Show results for the Entry-Level Python Engineer position
         System.out.print("Entry-Level Python Engineer - ");
-        if (pythonCW == 1 && sweCW == 1 && (degree == 1 || degree == 2)) {
+        if (pythonCW == 1 && sweCW == 1 && degreeBS == 1) { // If all conditions are met, user is qualified for this position
             System.out.println("Qualified");
-            if (agileCW == 1){
-                System.out.println("- It's helpful that you have completed Agile coursework");
+            if (agileCW == 1) { // Taking desired skill of Agile coursework into account
+                System.out.println("- Though not required, Agile coursework is a desired skill for this position. It is helpful that you have completed some");
             }
-        } else {
+        } else { // User is unqualified, they are missing at least one needed skill and/or qualification
+            // Print reason(s) why unqualified
             System.out.println("Not Qualified");
             if (pythonCW == 0) {
                 System.out.println("- Requires Python coursework");
@@ -129,20 +114,25 @@ public class ExpertSystemProgram {
             if (sweCW == 0) {
                 System.out.println("- Requires Software Engineering coursework");
             }
-            if (degree == 0) {
+            if (degreeBS == 0) {
                 System.out.println("- Requires a Bachelor in CS");
+            }
+            if (agileCW == 0) { // Informing user that completing Agile coursework could be helpful
+                System.out.println("- Though not required, Agile coursework is a desired skill for this position");
             }
         }
         System.out.println();
         Thread.sleep(1000);
 
+        // Show results for the Python Engineer position
         System.out.print("Python Engineer - ");
-        if (pythonYears >= 3 && dataDevYears >= 1 && (agileYears > 0 || agileCW == 1) && (degree == 1 || degree == 2)) {
+        if (pythonYears >= 3 && dataDevYears >= 1 && agileYears > 0 && degreeBS == 1) { // If all conditions are met, user is qualified for this position
             System.out.println("Qualified");
-            if (git == 1) {
-                System.out.println("- It's helpful that you have used GitHub");
+            if (git == 1) { // Taking desired skill of GitHub into account
+                System.out.println("- Though not required, using Github is a desired skill for this position. It is helpful that you have used it before");
             }
-        } else {
+        } else { // User is unqualified, they are missing at least one needed skill and/or qualification
+            // Print reason(s) why unqualified
             System.out.println("Not Qualified");
             if (pythonYears < 3) {
                 System.out.println("- Requires at least 3 years of experience in Python");
@@ -153,17 +143,22 @@ public class ExpertSystemProgram {
             if (agileYears == 0 && agileCW == 0) {
                 System.out.println("- Requires experience in Agile projects");
             }
-            if (degree == 0) {
+            if (degreeBS == 0) {
                 System.out.println("- Requires a Bachelor in CS");
+            }
+            if (git == 0) { // Informing user that gaining experience with GitHub could be helpful
+                System.out.println("- Though not required, using GitHub is a desired skill for this position");
             }
         }
         System.out.println();
         Thread.sleep(1000);
 
+        // Show results for the Project Manager position
         System.out.print("Project Manager - ");
-        if (managingYears >= 3 && agileYears >= 2 && pmiCert == 1) {
+        if (managingYears >= 3 && agileYears >= 2 && pmiCert == 1) { // If all conditions are met, user is qualified for this position
             System.out.println("Qualified");
-        } else {
+        } else { // User is unqualified, they are missing at least one needed skill and/or qualification
+            // Print reason(s) why unqualified
             System.out.println("Not Qualified");
             if (managingYears < 3) {
                 System.out.println("- Requires at least 3 years managing software projects");
@@ -178,10 +173,12 @@ public class ExpertSystemProgram {
         System.out.println();
         Thread.sleep(1000);
 
+        // Show results for the Senior Knowledge Engineer position
         System.out.print("Senior Knowledge Engineer - ");
-        if (pythonYears >= 4 && expertSystemYears >= 2 && dataArchYears >= 2 && dataDevYears >= 2 && degree == 2) {
+        if (pythonYears >= 4 && expertSystemYears >= 2 && dataArchYears >= 2 && dataDevYears >= 2 && degreeMS == 1) { // If all conditions are met, user is qualified for this position
             System.out.println("Qualified");
-        } else {
+        } else { // User is unqualified, they are missing at least one needed skill and/or qualification
+            // Print reason(s) why unqualified
             System.out.println("Not Qualified");
             if (pythonYears < 4) {
                 System.out.println("- Requires at least 4 years of experience in Python development");
@@ -195,7 +192,7 @@ public class ExpertSystemProgram {
             if (dataDevYears < 2) {
                 System.out.println("- Requires 2 years of experience in data development");
             }
-            if (degree == 0 || degree == 1) {
+            if (degreeMS == 0) {
                 System.out.println("- Requires a Masters in CS");
             }
         }
