@@ -3,11 +3,13 @@ import java.util.Scanner;
 public class ExpertSystemProgram {
     static Scanner scnr = new Scanner(System.in);
 
+    // Asks user what their highest earned degree is. 0 is returned for no degree, 1 is returned for a Bachelor, and 2
+    // is returned for a Masters.
     static int degreeQuestion() {
         String answer;
         System.out.print("What is the highest degree you have earned? (Bachelor in CS/Masters in CS/None): ");
 
-        while (true) {
+        while (true) { // Loop until acceptable answer is given
             answer = scnr.nextLine().trim();
 
             if (answer.equalsIgnoreCase("None")) {
@@ -16,8 +18,8 @@ public class ExpertSystemProgram {
                 return 1;
             } else if (answer.equalsIgnoreCase("Masters in CS")) {
                 return 2;
-            } else {
-                System.out.print("Please correctly format your answer (Bachelor in CS/Masters in CS/None): ");
+            } else { // Incorrect answer given
+                System.out.print("Please correctly format your answer (Bachelor in CS/Masters in CS/None): "); // Re-prompt user
             }
         }
     }
