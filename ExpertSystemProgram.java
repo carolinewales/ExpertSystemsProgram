@@ -3,6 +3,25 @@ import java.util.Scanner;
 public class ExpertSystemProgram {
     static Scanner scnr = new Scanner(System.in);
 
+    static int degreeQuestion() {
+        String answer;
+        System.out.print("What is the highest degree you have earned? (Bachelor in CS/Masters in CS/None): ");
+
+        while (true) {
+            answer = scnr.nextLine().trim();
+
+            if (answer.equalsIgnoreCase("None")) {
+                return 0;
+            } else if (answer.equalsIgnoreCase("Bachelor in CS")) {
+                return 1;
+            } else if (answer.equalsIgnoreCase("Masters in CS")) {
+                return 2;
+            } else {
+                System.out.print("Please correctly format your answer (Bachelor in CS/Masters in CS/None): ");
+            }
+        }
+    }
+
     // Asks user a yes or no question. 1 is returned if they answer yes, 0 is returned if they answered no
     // If incorrect input is given, the user is re-prompted to correct their answer
     static int yesOrNoQuestion(String question) {
@@ -48,9 +67,9 @@ public class ExpertSystemProgram {
 
     // Asks a series of questions to determine what jobs a user is qualified for
     public static void main(String[] args) throws InterruptedException {
-        int degreeBS, degreeMS, pmiCert; // Qualification variables
+        int degree, pmiCert; // Qualification variables
         int pythonCW, sweCW, agileCW; // Coursework variables
-        int git, pythonYears, agileYears, dataDevYears, dataArchYears, managingYears, expertSystemYears; // Skills & expertise variables
+        int git, pythonYears, agileYears, dataDevYears, dataArchYears, managingYears, expertSystemYears; // Skills & experience variables
 
         // Welcome the user to the expert system
         System.out.println("=+=+=+=+=+= Expert System: Applicant Qualification =+=+=+=+=+=");
@@ -60,9 +79,8 @@ public class ExpertSystemProgram {
 
         // Ask user about their qualifications and record answers
         System.out.println("=+=+=+=+=+= Qualifications =+=+=+=+=+=");
-        degreeBS = yesOrNoQuestion("Do you have a Bachelor in CS? ");
-        degreeMS = yesOrNoQuestion("Do you have a Masters in CS? ");
-        pmiCert = yesOrNoQuestion("Do you have a PMI Lean Project Management Certification?");
+        degree = degreeQuestion();
+        pmiCert = yesOrNoQuestion("Do you have a PMI Lean Project Management Certification? ");
         System.out.println();
 
         // Ask user about their coursework and record answers
@@ -73,11 +91,11 @@ public class ExpertSystemProgram {
         System.out.println();
         Thread.sleep(1000);
 
-        // Ask user about their skills & expertise and record answers
+        // Ask user about their skills & experience and record answers
         System.out.println("=+=+=+=+=+= Skills & Experience =+=+=+=+=+=");
         git = yesOrNoQuestion("Have you used GitHub? ");
 
-        // Ask time-based skills/expertise questions
+        // Ask time-based skills/experience questions
         System.out.println("For the following questions, enter how many years of experience you have working in each area.");
         pythonYears = yearsQuestion("Python Development");
         dataDevYears = yearsQuestion("Data Development");
@@ -96,7 +114,7 @@ public class ExpertSystemProgram {
         Thread.sleep(1000);
 
         System.out.print("Entry-Level Python Engineer - ");
-        if (pythonCW == 1 && sweCW == 1 && degreeBS == 1) {
+        if (pythonCW == 1 && sweCW == 1 && (degree == 1 || degree == 2)) {
             System.out.println("Qualified");
             if (agileCW == 1){
                 System.out.println("- It's helpful that you have completed Agile coursework");
@@ -109,7 +127,7 @@ public class ExpertSystemProgram {
             if (sweCW == 0) {
                 System.out.println("- Requires Software Engineering coursework");
             }
-            if (degreeBS == 0) {
+            if (degree == 0) {
                 System.out.println("- Requires a Bachelor in CS");
             }
         }
@@ -117,7 +135,7 @@ public class ExpertSystemProgram {
         Thread.sleep(1000);
 
         System.out.print("Python Engineer - ");
-        if (pythonYears >= 3 && dataDevYears >= 1 && (agileYears > 0 || agileCW == 1) && degreeBS == 1) {
+        if (pythonYears >= 3 && dataDevYears >= 1 && (agileYears > 0 || agileCW == 1) && (degree == 1 || degree == 2)) {
             System.out.println("Qualified");
             if (git == 1) {
                 System.out.println("- It's helpful that you have used GitHub");
@@ -133,7 +151,7 @@ public class ExpertSystemProgram {
             if (agileYears == 0 && agileCW == 0) {
                 System.out.println("- Requires experience in Agile projects");
             }
-            if (degreeBS == 0) {
+            if (degree == 0) {
                 System.out.println("- Requires a Bachelor in CS");
             }
         }
@@ -159,7 +177,7 @@ public class ExpertSystemProgram {
         Thread.sleep(1000);
 
         System.out.print("Senior Knowledge Engineer - ");
-        if (pythonYears >= 4 && expertSystemYears >= 2 && dataArchYears >= 2 && dataDevYears >= 2 && degreeMS == 1) {
+        if (pythonYears >= 4 && expertSystemYears >= 2 && dataArchYears >= 2 && dataDevYears >= 2 && degree == 2) {
             System.out.println("Qualified");
         } else {
             System.out.println("Not Qualified");
@@ -175,7 +193,7 @@ public class ExpertSystemProgram {
             if (dataDevYears < 2) {
                 System.out.println("- Requires 2 years of experience in data development");
             }
-            if (degreeMS == 0) {
+            if (degree == 0 || degree == 1) {
                 System.out.println("- Requires a Masters in CS");
             }
         }
