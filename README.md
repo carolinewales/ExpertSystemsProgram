@@ -5,7 +5,7 @@ This expert system replicates a rule-based engine. It asks a user about their qu
 
 How to Run:
 
-Download ExpertSystemProgram.java
-Open a new terminal
-Compile: javac ExpertSystemProgram.java
-Run: java ExpertSystemProgram
+1. Download ExpertSystemProgram.java
+2. Open a new terminal
+3. Compile: javac ExpertSystemProgram.java
+4. Run: java ExpertSystemProgram
