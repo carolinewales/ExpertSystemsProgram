@@ -140,7 +140,7 @@ public class ExpertSystemProgram {
             if (dataDevYears < 1) {
                 System.out.println("- Requires at least 1 year of experience in data development");
             }
-            if (agileYears == 0 && agileCW == 0) {
+            if (agileYears == 0) {
                 System.out.println("- Requires experience in Agile projects");
             }
             if (degreeBS == 0) {
