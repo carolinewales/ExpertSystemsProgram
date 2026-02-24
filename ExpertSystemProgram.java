@@ -72,7 +72,7 @@ public class ExpertSystemProgram {
         System.out.println("=+=+=+=+=+= Coursework =+=+=+=+=+=");
         pythonCW = yesOrNoQuestion("Have you completed any Python coursework? ");
         sweCW = yesOrNoQuestion("Have you completed any Software Engineering coursework? ");
-        agileCW = yesOrNoQuestion("Have you completed any Agile coursework?");
+        agileCW = yesOrNoQuestion("Have you completed any Agile coursework? ");
         System.out.println();
         Thread.sleep(1000);
 
